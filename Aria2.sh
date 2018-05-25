@@ -264,7 +264,7 @@ echo -e "${GreenBG} 开始配置自启 ${Font}"
 wget --no-check-certificate https://raw.githubusercontent.com/chiakge/Aria2-Rclone-DirectoryLister-Aria2Ng/gdlist/sh/aria2 -O /etc/init.d/aria2
 chmod +x /etc/init.d/aria2
 update-rc.d -f aria2 defaults
-wget https://raw.githubusercontent.com/fangwater/OneDrive-vps-builder/autoupload.sh
+wget https://raw.githubusercontent.com/fangwater/OneDrive-vps-builder/master/autoupload.sh
 sed -i '4i\name='${name}'' autoupload.sh
 sed -i '4i\folder='${folder}'' autoupload.sh
 mv autoupload.sh /root/.aria2/autoupload.sh
