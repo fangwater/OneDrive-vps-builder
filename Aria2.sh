@@ -112,14 +112,14 @@ port_exist_check(){
 
 oneindex_install(){
 echo -e "${GreenBG} 开始安装Oneindex ${Font}"
-	cd /root/home/wwwroot
+	cd /home/wwwroot
 	git clone https://github.com/donwa/oneindex
         chmod 777 ./config/ config/base.php cache/
         mv oneindex/ ${domain}
         apt insatll php7 php-curl
 	echo "http://${domain} {
  gzip
- proxy / http://127.0.0.1:33001
+ root /root/home/wwwroot/${domain}
      fastcgi / /var/run/php/php7.0-fpm.sock php {
          ext .php
          split .php
