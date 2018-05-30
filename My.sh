@@ -41,11 +41,9 @@ check_system(){
     fi
 	port_exist_check 80
 	port_exist_check 443
-	port_exist_check 33001
+	port_exist_check 18889
 	port_exist_check 6800
         port_exist_check 9000
-        port_exist_check 8888
-	port_exist_check 5000
 	apt-get update
 	apt install wget unzip net-tools bc curl sudo -y
 }
@@ -116,13 +114,14 @@ port_exist_check(){
 oneindex_install(){
 echo -e "${GreenBG} 开始安装Oneindex ${Font}"
 	cd /home/wwwroot
+        apt install git
 	git clone https://github.com/donwa/oneindex
-        chmod 777 ./config/ config/base.php cache/
         mv oneindex/ ${domain}
-        apt insatll php7 php-curl
-	echo "http://${domain} {
+        chmod 777 ${domain}/config/ ${domain}/config/base.php ${domain}/cache/
+        apt install php7.0-common php7.0-curl php7.0-fpm
+	echo "http://${domain} {1
  gzip
- root /root/home/wwwroot/${domain}
+ root /home/wwwroot/${domain}
      fastcgi / /var/run/php/php7.0-fpm.sock php {
          ext .php
          split .php
@@ -285,7 +284,7 @@ mongorestore -h localhost -d leanote --dir /home/leanote/mongodb_backup/leanote_
 nohup /bin/bash /home/leanote/bin/run.sh >> /var/log/leanote.log 2>&1 &
 echo "http://${domainnote} {
  gzip
- proxy / http://${local_ip}:9000
+ proxy / http://127.0.0.1:9000
 }" >> /usr/local/caddy/Caddyfile
 echo -e "${GreenBG} Leanote安装完成${Font}"
 }
@@ -303,9 +302,15 @@ pip install pyecharts-snapshot
 pip install sklearn
 echo "http://${domainjp} {
  gzip
- proxy / http://${local_ip}:8888
+ proxy / http://127.0.0.1:18889
 }" >>  /usr/local/caddy/Caddyfile
 echo -e "${GreenBG} Jupyter Notebook安装完成${Font}"
+jupyter notebook --generate-config
+echo "c.NotebookApp.allow_origin = '*'" >> /root/.jupyter/jupyter_notebook_config.py 
+echo "c.NotebookApp.port = 18889" >> /root/.jupyter/jupyter_notebook_config.py 
+echo "c.NotebookApp.ip = '*'" >> /root/.jupyter/jupyter_notebook_config.py 
+echo "c.NotebookApp.allow_root = True" >> /root/.jupyter/jupyter_notebook_config.py 
+nohup jupyter notebook >/dev/null 2>&1 &
 }
 
 

@@ -2,7 +2,6 @@
 #我自己的机器环境为ubuntu16.04 openvz 开启tun接口
 #卸载apche
 apt-get --purge remove apache2
-apt-get autoremove
 
 
 #https://www.moerats.com/archives/111/
