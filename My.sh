@@ -272,7 +272,7 @@ wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.1.tgz
 tar -xzvf mongodb-linux-x86_64-3.0.1.tgz
 mkdir -p /data/db
 echo "export PATH=\$PATH:/home/mongodb-linux-x86_64-3.0.1/bin" >> /etc/profile
-export LC_ALL=C
+source /etc/profile
 mongod --bind_ip localhost --port 27017 --dbpath /data/db/ --logpath=/var/log/mongod.log --fork
 echo -e "${GreenBG} Mongodb正常启动,请等待1.5min ${Font}"
 date
@@ -292,6 +292,8 @@ echo -e "${GreenBG} Leanote安装完成${Font}"
 
 jp_install(){
 echo -e "${GreenBG} 开始安装Jupyter Notebook${Font}"
+export LC_ALL=C
+source /etc/profile
 apt install python-pip
 pip install jupyter
 echo -e "${GreenBG} 安装常用包${Font}"
