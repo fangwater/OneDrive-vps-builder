@@ -347,8 +347,8 @@ main(){
 			aria2ng_install
 			aria_install
 			rclone_install
-                        jp_install()
-			leanote_install()
+                        jp_install
+			leanote_install
 			init_install
 }
 
