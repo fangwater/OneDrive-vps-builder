@@ -128,7 +128,7 @@ echo -e "${GreenBG} 开始安装Oneindex ${Font}"
          index index.php
      }
 
-}" > /usr/local/caddy/Caddyfile
+}" >> /usr/local/caddy/Caddyfile
 }
 
 aria2ng_install(){
@@ -275,7 +275,7 @@ source /etc/profile
 mongod --bind_ip localhost --port 27017 --dbpath /data/db/ --logpath=/var/log/mongod.log --fork
 echo -e "${GreenBG} Mongodb正常启动,请等待1.5min ${Font}"
 date
-sleep 1.5m
+sleep 0.5m
 date
 cd /home
 wget https://iweb.dl.sourceforge.net/project/leanote-bin/2.4/leanote-linux-amd64-v2.4.bin.tar.gz
@@ -310,16 +310,27 @@ echo "c.NotebookApp.allow_origin = '*'" >> /root/.jupyter/jupyter_notebook_confi
 echo "c.NotebookApp.port = 18889" >> /root/.jupyter/jupyter_notebook_config.py 
 echo "c.NotebookApp.ip = '*'" >> /root/.jupyter/jupyter_notebook_config.py 
 echo "c.NotebookApp.allow_root = True" >> /root/.jupyter/jupyter_notebook_config.py 
+stty erase '^H' && read -p "请输入jupyter的访问密码:" jppass 
+echo "c.NotebookApp.password = \"$jppass\"" >> /root/.jupyter/jupyter_notebook_config.py 
+
 nohup jupyter notebook >/dev/null 2>&1 &
 }
 
 
 init_install(){
 echo -e "${GreenBG} 开始配置自启 ${Font}"
-sed -i '1i\nohup jupyter notebook >/dev/null 2>&1 &' /etc/rc.local
-sed -i '1i\nohup /bin/bash /home/leanote/bsin/run.sh >> /var/log/leanote.log 2>&1 &' /etc/rc.local
-sed -i '1i\sleep 0.3m' /etc/rc.local
-sed -i '1i\mongod --bind_ip localhost --port 27017 --dbpath /data/db/ --logpath=/var/log/mongod.log --fork' /etc/rc.local
+touch start.sh
+sed -i '1i\nohup jupyter notebook >/dev/null 2>&1 &' start.sh
+sed -i '1i\nohup /bin/bash /home/leanote/bsin/run.sh >> /var/log/leanote.log 2>&1 &' start.sh
+sed -i '1i\sleep 0.3m' start.sh
+sed -i '1i\mongod --bind_ip localhost --port 27017 --dbpath /data/db/ --logpath=/var/log/mongod.log --fork' start.sh
+sed -i '1i\#!/bin/bash' start.sh
+chmod 755 start.sh
+mv start.sh /etc/init.d/
+cd /etc/init.d/
+update-rc.d start.sh defaults 90
+
+chmod +x  /etc/rc.local
 wget --no-check-certificate https://raw.githubusercontent.com/chiakge/Aria2-Rclone-DirectoryLister-Aria2Ng/gdlist/sh/aria2 -O /etc/init.d/aria2
 chmod +x /etc/init.d/aria2
 update-rc.d -f aria2 defaults

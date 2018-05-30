@@ -113,20 +113,21 @@ port_exist_check(){
 oneindex_install(){
 echo -e "${GreenBG} 开始安装Oneindex ${Font}"
 	cd /home/wwwroot
+        apt install git
 	git clone https://github.com/donwa/oneindex
-        chmod 777 ./config/ config/base.php cache/
         mv oneindex/ ${domain}
-        apt insatll php7 php-curl
+        chmod 777 ${domain}/config/ ${domain}/config/base.php ${domain}/cache/
+        apt install php7.0-common php7.0-curl php7.0-fpm
 	echo "http://${domain} {
  gzip
- root /root/home/wwwroot/${domain}
+ root /home/wwwroot/${domain}
      fastcgi / /var/run/php/php7.0-fpm.sock php {
          ext .php
          split .php
          index index.php
      }
 
-}" > /usr/local/caddy/Caddyfile
+}" >> /usr/local/caddy/Caddyfile
 }
 
 aria2ng_install(){
@@ -290,10 +291,10 @@ main(){
 			domain_check
 			basic_dependency
 			caddy_install
-			oneindex_install
 			aria2ng_install
 			aria_install
 			rclone_install
+                        oneindex_install
 			init_install
 }
 
