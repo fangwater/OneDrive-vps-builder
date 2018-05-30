@@ -119,7 +119,7 @@ echo -e "${GreenBG} 开始安装Oneindex ${Font}"
         mv oneindex/ ${domain}
         chmod 777 ${domain}/config/ ${domain}/config/base.php ${domain}/cache/
         apt install php7.0-common php7.0-curl php7.0-fpm
-	echo "http://${domain} {1
+	echo "http://${domain} {
  gzip
  root /home/wwwroot/${domain}
      fastcgi / /var/run/php/php7.0-fpm.sock php {
@@ -350,10 +350,10 @@ main(){
 			domain_check
 			basic_dependency
 			caddy_install
-			oneindex_install
 			aria2ng_install
 			aria_install
 			rclone_install
+			oneindex_install
                         jp_install
 			leanote_install
 			init_install
