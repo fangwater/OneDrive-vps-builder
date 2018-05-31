@@ -149,6 +149,12 @@ aria2ng_install(){
 }
 
 domain_check(){
+domain = "index.fhz.space"
+domain2 = "dl.fhz.space"
+pass ="fhz1997"
+domainjp = "jp.fhz.space"
+domainnote = "note.fhz.space"
+:'
 	stty erase '^H' && read -p "请输入你的Oneindex域名信息(eg:index.fhz.space):" domain 
 	stty erase '^H' && read -p "请输入你的Aria2NG域名信息(eg:dl.fhz.space):" domain2
 	stty erase '^H' && read -p "请输入你的Aria2密钥:" pass
@@ -176,6 +182,7 @@ domain_check(){
             ;;
         esac
     fi
+'
 }
 
 
@@ -310,9 +317,9 @@ echo "c.NotebookApp.allow_origin = '*'" >> /root/.jupyter/jupyter_notebook_confi
 echo "c.NotebookApp.port = 18889" >> /root/.jupyter/jupyter_notebook_config.py 
 echo "c.NotebookApp.ip = '*'" >> /root/.jupyter/jupyter_notebook_config.py 
 echo "c.NotebookApp.allow_root = True" >> /root/.jupyter/jupyter_notebook_config.py 
-stty erase '^H' && read -p "请输入jupyter的访问密码:" jppass 
-echo "c.NotebookApp.password = \"$jppass\"" >> /root/.jupyter/jupyter_notebook_config.py 
-
+echo "c.NotebookApp.open_browser = False" >> /root/.jupyter/jupyter_notebook_config.py 
+echo -e "${GreenBG}请输入Jupyter Notebook密码${Font}"
+jupyter notebook password
 nohup jupyter notebook >/dev/null 2>&1 &
 }
 
