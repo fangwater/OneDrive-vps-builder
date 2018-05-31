@@ -271,6 +271,7 @@ wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.1.tgz
 tar -xzvf mongodb-linux-x86_64-3.0.1.tgz
 mkdir -p /data/db
 echo "export PATH=\$PATH:/home/mongodb-linux-x86_64-3.0.1/bin" >> /etc/profile
+echo "export LC_ALL=C" >> /etc/profile
 source /etc/profile
 mongod --bind_ip localhost --port 27017 --dbpath /data/db/ --logpath=/var/log/mongod.log --fork
 echo -e "${GreenBG} Mongodb正常启动,请等待1.5min ${Font}"
@@ -283,8 +284,9 @@ tar -zxvf leanote-linux-amd64-v2.4.bin.tar.gz
 mongorestore -h localhost -d leanote --dir /home/leanote/mongodb_backup/leanote_install_data/
 nohup /bin/bash /home/leanote/bin/run.sh >> /var/log/leanote.log 2>&1 &
 echo "http://${domainnote} {
- gzip
- proxy / http://127.0.0.1:9000
+ proxy / localhost:18889 {
+   websocket
+ }
 }" >> /usr/local/caddy/Caddyfile
 echo -e "${GreenBG} Leanote安装完成${Font}"
 }
@@ -301,8 +303,10 @@ pip install matplotlib pyecharts
 pip install pyecharts-snapshot
 pip install sklearn
 echo "http://${domainjp} {
- gzip
- proxy / http://127.0.0.1:18889
+ proxy / localhost:18889 {
+   websocket
+}
+ 
 }" >>  /usr/local/caddy/Caddyfile
 echo -e "${GreenBG} Jupyter Notebook安装完成${Font}"
 jupyter notebook --generate-config
